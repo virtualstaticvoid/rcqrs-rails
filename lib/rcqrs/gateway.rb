@@ -26,7 +26,7 @@ module Rcqrs
 
     # Dispatch raised domain events
     def wire_events
-      @repository.on(:domain_event) {|source, event| @event_bus.dispatch(event) }
+      @repository.on(:domain_event) {|source, event| @event_bus.publish(event)}
     end
     
     def create_repository
