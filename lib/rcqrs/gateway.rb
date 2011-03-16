@@ -1,10 +1,10 @@
 module Rcqrs
   class Gateway
-    include Singleton
+    #include Singleton
     include Eventful
 
-    def self.publish(command)
-      instance.dispatch(command)
+    def self.publish(tenant, command)
+      Gateway.new(tenant).dispatch(command)
     end
     
     # Dispatch commands to the bus within a transaction
@@ -15,8 +15,11 @@ module Rcqrs
     end
 
   private
+
+    attr_reader :tenant
   
-    def initialize
+    def initialize(tenant)
+      @tenant = tenant 
       @repository = create_repository
       @command_bus = create_command_bus
       @event_bus = create_event_bus
@@ -43,10 +46,10 @@ module Rcqrs
     
     def create_event_storage
       if Rails.env.test?
-        EventStore::Adapters::InMemoryAdapter.new 
+        EventStore::Adapters::InMemoryAdapter.new(@tenant) 
       else
         config = YAML.load_file(File.join(Rails.root, 'config/event_storage.yml'))[Rails.env]
-        EventStore::Adapters::ActiveRecordAdapter.new(config)
+        EventStore::Adapters::ActiveRecordAdapter.new(@tenant, config)
       end
     end
   end
