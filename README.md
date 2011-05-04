@@ -12,6 +12,18 @@ Add the following dependencies to your Rails app's Gemfile and then `sudo bundle
     gem "rcqrs"
     gem "rcqrs-rails"
 
+Add the following paths to your `application.rb` file `autoload_paths` configuration
+
+    config.autoload_paths += %W(
+      #{config.root}/app/commands
+      #{config.root}/app/commands/handlers
+      #{config.root}/app/domain
+      #{config.root}/app/events
+      #{config.root}/app/events/handlers
+      #{config.root}/app/validators
+      #{config.root}/lib
+    )
+
 Add the following snippet inside `application_controller.rb` (ensuring it is `protected`) to allow each of your controllers to publish commands.
 
     def publish(command)
