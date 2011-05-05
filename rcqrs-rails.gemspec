@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
      "README.md",
      "Rakefile",
      "VERSION",
-     "example/event_storage.yml",
+     "example/rcqrs.yml",
      "lib/generators/rcqrs/command/command_generator.rb",
      "lib/generators/rcqrs/command/templates/command.rb",
      "lib/generators/rcqrs/command/templates/handler.rb",
